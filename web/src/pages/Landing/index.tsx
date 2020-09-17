@@ -1,16 +1,25 @@
-import React from 'react';
-import { Link } from "react-router-dom";
-import "./styles.css";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import './styles.css';
 
-
-
-import logoImg from "../../assets/images/logo.svg";
-import landingImg from "../../assets/images/landing.svg";
-import studyIcon from "../../assets/images/icons/study.svg";
-import giveClassesIcon from "../../assets/images/icons/give-classes.svg";
-import purpleHeartIcon from "../../assets/images/icons/purple-heart.svg";
+import logoImg from '../../assets/images/logo.svg';
+import landingImg from '../../assets/images/landing.svg';
+import studyIcon from '../../assets/images/icons/study.svg';
+import giveClassesIcon from '../../assets/images/icons/give-classes.svg';
+import purpleHeartIcon from '../../assets/images/icons/purple-heart.svg';
+import api from '../../services/api';
 
 const Landing: React.FC = () => {
+  const [totalConections, setTotalConections] = useState(0);
+
+  useEffect(() => {
+    async function loadFoods(): Promise<void> {
+      const response = await api.get('/connections');
+      setTotalConections(response.data);
+    }
+    loadFoods();
+  }, []);
+
   return (
     <div id="page-landing">
       <div className="container" id="page-landing-content">
@@ -37,12 +46,12 @@ const Landing: React.FC = () => {
         </div>
 
         <span className="total-connections">
-          Total de 200 conexões realizadas.{" "}
+          Total de {totalConections} conexões realizadas.
           <img src={purpleHeartIcon} alt="Coração Roxo" />
         </span>
       </div>
     </div>
   );
-}
+};
 
 export default Landing;
